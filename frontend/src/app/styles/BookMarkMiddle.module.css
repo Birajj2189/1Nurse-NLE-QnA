@@ -1,0 +1,426 @@
+.mainContainer{
+    border-radius:6px;
+
+    width: 85% !important;
+    height: 100vh;
+    margin-top: 10vh;
+}
+.middleSubsection{
+    padding: 0 30px;
+    width: 100%;
+}
+
+.middleSection{
+    overflow-y: scroll;
+    height: 90vh;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+.middleSection::-webkit-scrollbar {
+    width: 12px;
+
+}
+.middleSection::-webkit-scrollbar-track {
+    background-color: var(--primary-soft-color);
+}
+
+.middleSection::-webkit-scrollbar-thumb {
+    background-color: var(--primary-soft-color);
+    border-radius: 16px;
+}
+
+.middleSection:hover::-webkit-scrollbar-thumb {
+    background-color: var(--gray1);
+}
+
+
+
+
+@media (min-width: 320px){
+.middleSubsection {
+     padding: 0;
+}
+.globeTime{
+    display:flex !important;
+}
+.globe{
+    display: flex;
+    align-items: flex-start;
+    margin-top: 2px;
+    margin-left: 6px;
+}
+.quesContainer{
+    width: 98%;
+    height: auto;
+    border-radius:16px;
+    background-color:white;
+    padding: 30px;
+}
+.questionHeader{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.questionUser{
+    display:flex;
+    align-items: center;
+}
+.questionUserName{
+    justify-content: flex-start;
+    font-size:14px;
+    font-weight: bold;
+}
+
+.questionUserDescription{
+    display:flex;
+}
+.questionUserDesignation{
+    font-size:10px;
+    justify-content: flex-start;
+    margin-right: 10px;
+}
+.questionUserTimestamp{
+    font-size:10px;
+    justify-content: flex-start;
+}
+.questionUserContent{
+    font-size: 30px;
+}
+.button{
+    padding: 4px 6px;
+    background: rgba(28,117,182,.15);
+    border-radius: 6px;
+    font-size: 9px;
+    color: #1c75b6;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    border:none;
+}
+.questionContainer{
+    display:flex;
+    justify-content: center;
+}
+.question{
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+    line-height: 18px;
+}
+.upDown{
+    display: flex;
+}
+.buttonContainer{
+    margin-top: 20px;
+    display:flex;
+    justify-content: space-between;
+}
+.buttonSubContainer{
+    width:70%;
+    display:flex;
+    justify-content: flex-start;
+
+}
+.btn{
+    width: fit-content;
+    font-size: 12px !important;
+    margin-right: 10px !important;
+}
+.buttonSubContainer2{
+    width:20%;
+    display:flex;
+    justify-content: flex-end;
+}
+.repliesContainer{
+    margin-top:10px;
+    width: 98%;
+    height: auto;
+    border-radius:6px;
+    background-color:white;
+    padding: 30px;
+}
+.ansHeader{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.followButton{
+    padding: 4px 6px;
+    background: rgba(28,117,182,.15);
+    border-radius: 6px;
+    font-size: 9px;
+    color: #1c75b6;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    border:none;
+}
+.ansUser{
+    display:flex;
+    align-items: center;
+}
+.ansUserContent{
+    font-size: 30px;
+}
+.ansUserImage{
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right:20px;
+}
+.ansUserName{
+    justify-content: flex-start;
+    font-size:14px;
+    font-weight: bold;
+}
+.ansUserDescription{
+    display:flex;
+}
+.ansUserDesignation{
+    font-size:10px;
+    justify-content: flex-start;
+    margin-right: 10px;
+}
+.ansUserTimestamp{
+    font-size:10px;
+    justify-content: flex-start;
+}
+.ansContainer{
+    margin-top: 20px;
+    display:flex;
+    justify-content: center;
+}
+.ans{
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+    line-height: 18px;
+    color:black;
+
+}
+.ansButtonSubContainer2{
+    width:10%;
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.cardBody{
+    margin-top:20px;
+    width:100%;
+    display:flex;
+    flex-direction: row !important;
+    align-items: center;
+    background-color:var(--dark-blue4) !important;
+    border: none !important;
+}
+.commentUserImage{
+    border-radius: 100%;
+    overflow: hidden;
+    margin-right:10px !important;
+}
+.commentInput{
+    width:60%;
+    margin-right: 20px;
+}
+.input{
+    box-sizing: content-box;
+    width:100%;
+    height: 20px !important;
+    padding:6px;
+    border-radius: 20px;
+    border: 1px solid;
+    border-color: rgb(186, 186, 186);
+    box-shadow: 0 2px 6px rgba(92, 93, 93, 0.24);
+    outline: none;
+}
+.addCommentButton{
+    border-radius: 50px !important;
+    font-size:80% !important;
+    color: white !important;
+    background-color: #1cb6b6 !important;
+    border-color: #1cb6b6 !important;
+    box-shadow: 0 2px 6px rgba(28,182,182,.24);
+
+}
+.commentMain{
+    padding: 20px;
+    margin-top:5px;
+    width:100%;
+    flex-direction: row !important;
+    align-items: center;
+    background-color:var(--dark-blue4) !important;
+    border: none !important;
+    border-radius: 5px;
+
+}
+.commentHeader{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.commentUserImage{
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right:20px;
+}
+.commentUserContent{
+    font-size: 30px;
+}
+.commentUser{
+    display:flex;
+    align-items: center;
+}
+.commentUserName{
+    justify-content: flex-start;
+    font-size:14px;
+    font-weight: bold;
+}
+.commentUserDescription{
+    display:flex;
+}
+.commentUserDesignation{
+    font-size:10px;
+    justify-content: flex-start;
+    margin-right: 10px;
+}
+.commentUserTimestamp{
+    font-size:10px;
+    justify-content: flex-start;
+}
+.commentContainer{
+    margin-top: 20px;
+    display:flex;
+    justify-content: center;
+}
+.comment{
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+    line-height: 18px;
+    color:black;
+}
+.replies{
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color:var(--dark-blue4) !important;
+    border: 1px solid;
+    border-color: var(--dark-blue3) !important;
+}
+.replyDiv{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+
+}
+.replyBox{
+    width:90% !important;
+    margin: 10px;
+}
+.replyUserImage{
+    border-radius: 100%;
+    overflow: hidden;
+    margin-right:10px !important;
+}
+.replyCardBody{
+    margin-top:20px;
+    width:100%;
+    display:flex;
+    flex-direction: row !important;
+    align-items: center;
+    background-color:var(--dark-blue4) !important;
+    border-color: var(--dark-blue3) !important;
+}
+.replyInput{
+    width:60%;
+    margin-right: 15px;
+}
+.input2{
+    box-sizing: content-box;
+    width:100%;
+    height: 30px !important;
+    padding-left:6px;
+    border-radius: 20px;
+    border: 1px solid;
+    border-color: rgb(186, 186, 186);
+    box-shadow: 0 2px 6px rgba(92, 93, 93, 0.24);
+    outline: none;
+}
+.addReplyButton{
+    border-radius: 50px !important;
+    color: white !important;
+    background-color: #1cb6b6 !important;
+    border-color: #1cb6b6 !important;
+    box-shadow: 0 2px 6px rgba(28,182,182,.24);
+    font-size: 12px !important;
+}
+.replyHeader{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.replyContainer{
+    margin-top: 5px;
+    display:flex;
+    justify-content: center;
+}
+.reply{
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 14px;
+    line-height: 18px;
+    color:black;
+}
+.replyUserImage{
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right:20px;
+}
+.replyUserContent{
+    font-size: 30px;
+}
+.replyUser{
+    display:flex;
+    align-items: center;
+}
+.replyUserName{
+    justify-content: flex-start;
+    font-size:14px;
+    font-weight: bold;
+}
+.replyUserDescription{
+    display:flex;
+}
+.replyUserDesignation{
+    font-size:10px;
+    justify-content: flex-start;
+    margin-right: 10px;
+}
+.replyUserTimestamp{
+    font-size:10px;
+    justify-content: flex-start;
+}
+.photoContainer{
+    display: flex;
+    justify-content: center;
+
+}
+.photo{
+    margin-top: 20px;
+    width:90%;
+    height:90%;
+    background-color: blue;
+
+}
+.photoImage{
+    width: 100%;
+    height: 100%;
+}
+}

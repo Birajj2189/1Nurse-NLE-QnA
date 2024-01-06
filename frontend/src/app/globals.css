@@ -1,0 +1,155 @@
+:root {
+  max-height: 100%;
+  max-width: 100%;
+  --max-width: 1100px;
+  --border-radius: 12px;
+  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+
+    /* COLOR PALLETE  */
+  --primary-color : #1CB6B6;
+  --primary-soft-color : #E9F8F8;
+  --primary-softer-color : #F4FCFC;
+  --secondary-color : #1C75B6;
+  --secondary-soft-color : #D3E3EF;
+  --secondary-softer-color : #EDF3F6;
+  --secondary-softest-color : #FDF3F6;
+  --primary-text-color : #313131;
+  --secondary-text : #505050;
+  --tertiary-text : #C4C4C4;
+  --gray1 : #E5E5E5 ;
+  --gray2 : #E5E5E5 ;
+  --white : #FFFFFF ;
+  --dark-blue1 : #6B7881 ; 
+  --dark-blue2 : #92A2AE ; 
+  --dark-blue3 : #DFE6EC ; 
+  --dark-blue4 : #F1F5F7 ; 
+  --info-blue : #376ACC ;
+  --success-green : #54C18D;
+  --warning-red : #CA3D3D;
+  --warning-yellow : #DCAC31;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+
+}
+}
+
+* {
+  font-family: Rubik Regular,sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100%;
+  max-height: 100%;
+  font-family: Rubik Regular,sans-serif;
+  overflow-x: hidden;
+  background-color: var(--secondary-softer-color);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navbar{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.active{
+  color: var(--secondary-color) !important;
+}
+
+.nav-link {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+
+/*Navbar styles*/
+.mainNav {
+  position: fixed;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(2px 1px 4px rgba(0, 0, 0, 0.1));
+  z-index: 10000;
+}
+
+.navBar{
+  width: 100%;
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  background-color: white;
+}
+
+.containerFluid{
+  height: 100%;
+}
+.navUl{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navLi{
+  height: 100%;
+  margin: 0 1rem !important;
+}
+
+.navLink{
+  height: 100%;
+  color: var(--primary-text-color) !important;
+}
+
+.searchBox{
+  height: 50%;
+}
+.NotificationIcon{
+  color: var(--primary-color);
+  height: 1.5rem ;
+  width: 1.5rem;
+}
+
+
+.profileBox{
+  display: flex;
+}
+
+.ProfileBtn{
+  display: flex;
+
+}
+
+.userIcon{
+  margin: 0 0.5rem ;
+}
+
+.userName{
+  margin : 0 0.5rem ;
+}
+
+.menuIcon{
+  margin: 0 0.5rem ;
+}
+section{
+  max-height: 90vh;
+  max-width: 100vw;
+}
