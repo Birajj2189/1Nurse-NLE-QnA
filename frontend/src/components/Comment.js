@@ -11,7 +11,7 @@ const Comment = ({ questionId ,user_id}) => {
       body: '',
       commentable_id: '',
       parent_comment_id: '',
-      user: ''
+      user_id: ''
     });
     const [commentData, setCommentData] = useState({});
     const [loading, setLoading] = useState(false);
@@ -30,7 +30,11 @@ const Comment = ({ questionId ,user_id}) => {
       }
 
       const uniqueCommentId = `c-${uuidv4()}`;
-      setcomFormData({ ...comformData, commentable_id: questionId, user:user_id});
+        setcomFormData({
+            ...comformData,
+            commentable_id: questionId,
+            user_id: user_id,  // Use the passed user_id
+        });
 
       try {
         setLoading(true);
@@ -75,17 +79,35 @@ const Comment = ({ questionId ,user_id}) => {
       };
   
     useEffect(() => {
-      const fetchComments = async () => {
-        try {
-          const response = await axios.get(`${backendUrl}/api/comments/create/${questionId}`);
-          setCommentData(response.data);
-          setCommentData(response.data);
-        } catch (error) {
-          console.error(error);
+        const fetchComments = async () => {
+            try {
+                const response = await axios.get(`${backendUrl}/api/comments/create/${questionId}`);
+                setCommentData(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        // Fetch comments only if a new comment has been posted (loading is false)
+        if (!loading) {
+            fetchComments();
         }
-      };
-      fetchComments();
-    }, [questionId,user_id, loading]);
+    }, [questionId, user_id, loading]);
+
+     const [users, setUsers] = useState([]);
+    useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/api/users/`);
+        setUsers(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUsers();
+  }, [backendUrl]);
+
     return (
         <div className="collapse" id={`collapseExample${questionId}`}>
             <div className={`card card-body ${styles.cardBody}`}>
@@ -129,7 +151,7 @@ const Comment = ({ questionId ,user_id}) => {
                                 <div className={styles.commentUserContent}>
                                     <div className="user">
                                         <div className={styles.commentUser}>
-                                            <div className={styles.commentUserName}>{user_id}</div>
+                                            <div className={styles.commentUserName}>{users.filter(user => user.user_id ==comment.user_id).map(user => user.username)}</div>
                                             <div>
                                                 <button type="button"
                                                         className={styles.followButton}>Follow
@@ -137,8 +159,8 @@ const Comment = ({ questionId ,user_id}) => {
                                             </div>
                                         </div>
                                         <div className={styles.commentUserDescription}>
-                                            <div className={styles.commentUserDesignation}>Assam University
-                                                Student
+
+                                            <div className={styles.commentUserDesignation}>{users.filter(user => user.user_id ==comment.user_id).map(user => user.bio)}
                                             </div>
                                             <div className={styles.globeTime}>
                                                 <div className={styles.commentUserTimestamp}>5h</div>

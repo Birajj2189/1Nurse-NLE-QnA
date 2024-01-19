@@ -97,7 +97,7 @@ class Comment(models.Model):
     body = models.TextField(null=True, blank=True)
     commentable_id = models.CharField(max_length=255, null=True, blank=True)
     parent_comment_id = models.OneToOneField('self', on_delete=models.SET_NULL, null=True, blank=True)
-    user = models.IntegerField(null=True, blank=True)
+    user_id = models.IntegerField(null=True, blank=True)
     upvote_count = models.IntegerField(null=True, blank=True)
     downvote_count = models.IntegerField(null=True, blank=True)
     createdAt = models.DateTimeField(default=timezone.now,null=True, blank=True)

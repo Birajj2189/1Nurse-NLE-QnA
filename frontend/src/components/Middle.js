@@ -32,7 +32,7 @@ useEffect(() => {
     try {
       const response = await axios.get(`${backendUrl}/api/users/`);
       const foundUser = response.data.find(
-      user => user.username === 'BIPUL'
+      user => user.username === 'KNOVI'
       &&
       user.password === 'admin'
       );
@@ -485,9 +485,9 @@ const handleAnswerSubmit = async (event) => {
                             </div>
                         </div>
                         {/*Question comments dropdown*/}
-                        <Comment questionId={question.question_id}/>
 
-                        <Comment user_id={user && user.user_id} />
+                        <Comment questionId={question.question_id} user_id={user && user.user_id} />
+
                     </div>
                 ))}
 
