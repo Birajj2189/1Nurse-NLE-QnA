@@ -1,0 +1,17 @@
+.side{
+    position: fixed;
+    margin-top: 10vh;
+    height: 90vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+
+.extra{
+    background-color: rgb(93, 52, 52);
+    justify-content:space-between ;
+    gap: 400px;
+}

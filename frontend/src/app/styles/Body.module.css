@@ -1,0 +1,187 @@
+.mainScreen{
+    height: 90vh;
+    overflow: hidden;
+    width: 100vw;
+    margin-top: 10vh;
+    background-color: var(--primary-soft-color);
+}
+
+.mainContainer{
+    border-radius:6px;
+    width: 85% !important;
+}
+
+.quesContainer{
+    margin-top:10px;
+    width: 98%;
+    height: auto;
+    border-radius:16px;
+    background-color:white;
+    padding: 30px;
+}
+.questionHeader{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.questionUser{
+    display:flex;
+    align-items: center;
+}
+.questionUserInfo{
+    justify-content: flex-start;
+    font-size:20px;
+    font-weight: bold;
+}
+.questionUserImage{
+
+}
+.questionUserDescription{
+    display:flex;
+}
+.questionUserDesignation{
+    font-size:15px;
+    justify-content: flex-start;
+    margin-right: 10px;
+}
+.questionUserTimestamp{
+    font-size:15px;
+    justify-content: flex-start;
+}
+.questionUserContent{
+    font-size: 30px;
+}
+.button{
+    padding: 5px 7px;
+    background-color: rgba(28,117,182,.15);
+    border-radius: 6px;
+    font-size: 9px;
+    color: #1c75b6;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+.questionContainer{
+    display:flex;
+    justify-content: center;
+}
+.question{
+    width:80%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 18px;
+    font-weight: bold;
+}
+.buttonContainer{
+    margin-top: 20px;
+    display:flex;
+    justify-content: space-between;
+}
+.buttonSubContainer{
+    width:70%;
+    display:flex;
+    justify-content: space-evenly;
+}
+.buttonSubContainer2{
+    width:20%;
+    display:flex;
+    justify-content: space-evenly;
+}
+.repliesContainer{
+    margin-top:10px;
+    width: 98%;
+    height: auto;
+    border-radius:6px;
+    background-color:white;
+    padding: 30px;
+}
+.ansHeader{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.followButton{
+    padding: 5px 7px;
+    background-color: rgba(28,117,182,.15);
+    border-radius: 6px;
+    font-size: 9px;
+    color: #1c75b6;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+.ansUser{
+    display:flex;
+    align-items: center;
+}
+.ansUserContent{
+    font-size: 30px;
+}
+.ansUserImage{
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right:20px;
+}
+.ansUserInfo{
+    justify-content: flex-start;
+    font-size:20px;
+    font-weight: bold;
+}
+.ansUserDescription{
+    display:flex;
+}
+.ansUserDesignation{
+    font-size:15px;
+    justify-content: flex-start;
+    margin-right: 10px;
+}
+.ansUserTimestamp{
+    font-size:15px;
+    justify-content: flex-start;
+}
+.ansContainer{
+    margin-top: 20px;
+    display:flex;
+    justify-content: center;
+}
+.ans{
+    width:80%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 18px;
+
+}
+.ansButtonSubContainer2{
+    width:10%;
+    display:flex;
+    justify-content: space-evenly;
+}
+
+.cardBody{
+    margin-top:10px;
+    width:98%;
+    display:flex;
+    flex-direction: row !important;
+    align-items: center;
+}
+.commentUserImage{
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right:20px;
+}
+.commentInput{
+    width:70%;
+    margin-right: 15px;
+}
+.input{
+    width:100%;
+    padding:6px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.addCommentButton{
+    border-radius: 50px !important;
+    overflow: hidden;
+}
