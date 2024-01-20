@@ -69,45 +69,9 @@ useEffect(() => {
 
 
 //
-// Answers
-const [answerFormData, setAnswerFormData] = useState({
-  "body": "",
-  "image_url": "",
-  "question_id": "",
-  "user_id": ""
-});
 
-const [selectedQuestionId, setSelectedQuestionId] = useState(null);
 
-const handleAnswerChange = (event) => {
-  if (event.target.type === "file") {
-    const file = event.target.files[0];
-    setAnswerFormData({ ...answerFormData, [event.target.name]: file });
-  } else {
-    setAnswerFormData({ ...answerFormData, [event.target.name]: event.target.value });
-  }
-};
 
-const handleAnswerSubmit = async (event) => {
-  event.preventDefault();
-
-  try {
-    const formData = new FormData();
-    formData.append('body', answerFormData.body);
-    formData.append('image_url', answerFormData.image_url);
-    formData.append('question_id', selectedQuestionId);
-    formData.append('user_id', user && user.user_id);
-
-    const response = await axios.post(`${backendUrl}/api/answers/create/`, formData);
-
-    console.log(response.data); // Handle successful response
-    window.location.reload();
-  } catch (error) {
-    console.error(error); // Handle errors
-    console.log("submit failed");
-    window.location.reload();
-  }
-};
 
 //
 
@@ -265,8 +229,78 @@ const handleAnswerSubmit = async (event) => {
         setFormData({ ...formData, subtopic_id: selectedSubtopicId });
     };
 
+//
+
+// Answers
+const [selectedQuestionId, setSelectedQuestionId] = useState(null);
+ const [answerFormData, setAnswerFormData] = useState({
+        "body": "",
+        "image_url": "",
+        "user_id": "",
+        "question_id": ""
+
+      });
+
+      const handleAnswerChange = (event) => {
+          if (event.target.type === "file") {
+            const file = event.target.files[0];
+            setAnswerFormData({ ...answerFormData, [event.target.name]: file });
+          } else {
+            // Handle the hidden field separately
+            if (event.target.name === "question_id") {
+              setSelectedQuestionId(event.target.value);
+            } else {
+              setAnswerFormData({ ...answerFormData, [event.target.name]: event.target.value });
+            }
+          }
+        };
 
 
+      const handleAnswerSubmit = async (event) => {
+  if (user) {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData();
+
+      for (const key in answerFormData) {
+        formData.append(key, answerFormData[key]);
+        formData.append("user_id", user && user.user_id);
+        if (selectedQuestionId) {
+        formData.append("question_id", selectedQuestionId);
+      }
+
+      }
+      const response = await axios.post(`${backendUrl}/api/answers/create/`, formData);
+
+      console.log(response.data); // Handle successful response
+      window.location.reload();
+    } catch (error) {
+      console.error(error); // Handle errors
+      console.log("submit failed");
+    }
+  }
+};
+
+
+//
+
+const [answers, setAnswers] = useState([]);
+
+  useEffect(() => {
+    const fetchAnswers = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/api/answers/`);
+        setAnswers(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchAnswers();
+  }, [backendUrl]);
+
+//
     return (
         <div className={`${styles.middleSection} col-xl-6 col-lg-8 col-md-12 col-sm-12`}>
 
@@ -411,13 +445,12 @@ const handleAnswerSubmit = async (event) => {
                                 </div>
                                 <div className="modal-body">
 
-                                    <form>
+                                <form action="" method="post">
                                     <div className="mb-3">
-                                        <div className={styles.AnswerInputQuestion}>
+                                        <div className={styles.AnswerInputQuestion}>{question.title}</div>
+                                        {/* Hidden field for question_id */}
+                                         <input type="hidden" className="form-control" name="question_id" value={question.question_id} />
 
-                                       {question.title}
-
-                                        </div>
 
                                     </div>
                                     <div className="mb-3">
@@ -425,18 +458,16 @@ const handleAnswerSubmit = async (event) => {
                                         <textarea className="form-control" name="body" id="body" value={answerFormData.body} onChange={handleAnswerChange}></textarea>
                                     </div>
                                     <div className="input-group mb-3">
-                                        <input type="file" className="form-control" id="image_url" name="image_url" onChange={handleAnswerChange}/>
-                                        <label className="input-group-text" name="image_url" id="image_url" value={answerFormData.image_url} onChange={handleAnswerChange} for="image_url">Upload</label>
+                                        <input type="file" className="form-control" id="image_url" name="image_url" onChange={handleAnswerChange} accept="main/*" />
 
+                                        <label className="input-group-text">Upload</label>
                                     </div>
-                                    </form>
-
-
-                                </div>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button onClick={handleAnswerSubmit} type="submit" className={`btn btn-light ${styles.modalButton}`}>Submit</button>
-                                </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" onClick={handleAnswerSubmit} className={`btn btn-light ${styles.modalButton}`}>Submit</button>
+                                    </div>
+                                </form>
+                            </div>
 
                                 </div>
                             </div>
@@ -519,8 +550,12 @@ const handleAnswerSubmit = async (event) => {
                     </div>
                     <div className={styles.ansContainer}>
                         <div className={styles.ans}>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore iure commodi vero accusamus quis impedit sdfdgh arstdyf aerty eawrtyj aesrdgjb dgfhgn. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi quas odio quod iusto fugiat vitae esse cumque atque, voluptatem neque doloribus similique voluptas, odit, natus laboriosam ut cum earum.
-                        </div>
+                           <ul>
+                                        {answers.map((answer, index) => (
+                                          <li key={index}>{answer.body}</li>
+                                        ))}
+                                      </ul>
+                                      </div>
                     </div>
                     <div className={styles.photoContainer}>
                         <div className={styles.photo}>
@@ -573,8 +608,12 @@ const handleAnswerSubmit = async (event) => {
                             </div>
                             <div className={styles.commentContainer}>
                                 <div className={styles.comment}>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore iure commodi vero accusamus quis impedit sdfdgh arstdyf aerty eawrtyj aesrdgjb dgfhgn. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi quas odio quod iusto fugiat vitae esse cumque atque, voluptatem neque doloribus similique voluptas, odit, natus laboriosam ut cum earum.
-                                </div>
+                                    <ul>
+                                        {answers.map((answer, index) => (
+                                          <li key={index}>{answer.body}</li>
+                                        ))}
+                                      </ul>
+                                      </div>
                             </div>
                             <div className={styles.buttonContainer}>
                                 <div className={styles.buttonSubContainer}>
@@ -685,8 +724,12 @@ const handleAnswerSubmit = async (event) => {
                             </div>
                             <div className={styles.commentContainer}>
                                 <div className={styles.comment}>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore iure commodi vero accusamus quis impedit sdfdgh arstdyf aerty eawrtyj aesrdgjb dgfhgn. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi quas odio quod iusto fugiat vitae esse cumque atque, voluptatem neque doloribus similique voluptas, odit, natus laboriosam ut cum earum.
-                                </div>
+                                    <ul>
+                                        {answers.map((answer, index) => (
+                                          <li key={index}>{answer.body}</li>
+                                        ))}
+                                      </ul>
+                                      </div>
                             </div>
                             <div className={styles.buttonContainer}>
                                 <div className={styles.buttonSubContainer}>

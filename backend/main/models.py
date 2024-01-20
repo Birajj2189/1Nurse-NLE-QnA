@@ -83,14 +83,14 @@ class Vote(models.Model):
     createdAt = models.DateTimeField(default=timezone.now,null=True, blank=True)
 
 class Answer(models.Model):
-    answer_id = models.CharField(primary_key=True)
+    answer_id = models.AutoField(primary_key=True)
     body = models.TextField(null=True, blank=True)
-    image_url = models.FileField(upload_to="main/",null=True, default=None)
+    image_url = models.FileField(upload_to="main/",null=True, blank=True, default=None)
     view_count = models.IntegerField(null=True, blank=True)
     upvote_count = models.IntegerField(null=True, blank=True)
     downvote_count = models.IntegerField(null=True, blank=True)
     user_id = models.IntegerField(null=True, blank=True)
-    question_id = models.IntegerField(null=True, blank=True)
+    question_id = models.TextField(null=True, blank=True)
 
 class Comment(models.Model):
     comment_id = models.CharField(primary_key=True)
