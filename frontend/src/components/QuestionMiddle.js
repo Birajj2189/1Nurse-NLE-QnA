@@ -249,9 +249,9 @@ const [answers, setAnswers] = useState([]);
 
                 {/* Answers with photos*/}
                 {answers.map((answer, index) => (
+                answer.question_id === question.question_id && (
                   <div key={index} className={styles.repliesContainer}>
-                    {answer.question_id === question.question_id && (
-                     <>
+
                     <div className={styles.ansHeader}>
                         <div className={styles.ansUserImage}>
                             <Image src="/user.png" width="50" height="50"/>
@@ -303,10 +303,9 @@ const [answers, setAnswers] = useState([]);
 
                     {/*Question comments dropdown*/}
                      <Commentans questionId={answer.answer_id} user_id={user && user.user_id} />
- </>
-    )}
+
                 </div>
-))}
+)))}
 
 
 
