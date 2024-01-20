@@ -224,8 +224,6 @@ const [answers, setAnswers] = useState([]);
                                         <div className={styles.AnswerInputQuestion}>{question.title}</div>
                                         {/* Hidden field for question_id */}
                                          <input type="hidden" className="form-control" name="question_id" value={question.question_id} />
-
-
                                     </div>
                                     <div className="mb-3">
                                         <label for="message-text" className="col-form-label">Answer Content:</label>
@@ -252,6 +250,8 @@ const [answers, setAnswers] = useState([]);
                 {/* Answers with photos*/}
                 {answers.map((answer, index) => (
                   <div key={index} className={styles.repliesContainer}>
+                    {answer.question_id === question.question_id && (
+                     <>
                     <div className={styles.ansHeader}>
                         <div className={styles.ansUserImage}>
                             <Image src="/user.png" width="50" height="50"/>
@@ -259,7 +259,6 @@ const [answers, setAnswers] = useState([]);
                         <div className={styles.ansUserContent}>
                             <div className="user">
                                 <div className={styles.ansUser}>
-
                                     <div className={styles.ansUserName}>{users.filter(user => user.user_id ==answer.user_id).map(user => user.username)}</div>
                                     <div>
                                         <button type="button" className={styles.followButton}>Follow</button>
@@ -301,8 +300,11 @@ const [answers, setAnswers] = useState([]);
                             <div><button type="button" className={`btn btn-light ${styles.btn}`}>...</button></div>
                         </div>
                     </div>
+
                     {/*Question comments dropdown*/}
                      <Commentans questionId={answer.answer_id} user_id={user && user.user_id} />
+ </>
+    )}
                 </div>
 ))}
 
