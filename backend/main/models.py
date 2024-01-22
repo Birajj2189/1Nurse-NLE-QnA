@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser,Group, Permission
+from django.contrib.auth.hashers import make_password
 
-class Users(models.Model):
+class Users(AbstractUser):
     user_id = models.CharField(primary_key=True)
     user_type = models.IntegerField(null=True, blank=True)
     username = models.CharField(unique=True, max_length=255, null=True, blank=True)
@@ -10,12 +12,26 @@ class Users(models.Model):
     bio = models.TextField(null=True, blank=True)
     avatar_url = models.URLField(null=True, blank=True)
     interest = models.JSONField(null=True, blank=True)
-    createdAt = models.DateTimeField(default=timezone.now,null=True, blank=True)
-    updatedAt = models.DateTimeField(default=timezone.now,null=True, blank=True)
+    createdAt = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    updatedAt = models.DateTimeField(default=timezone.now, null=True, blank=True)
+
+    # Foreign Key relationships
     followed_by = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
-    following = models.ManyToManyField('self', symmetrical=False, related_name='followings', blank=True)
-    bookmarked_posts = models.ManyToManyField('Question', related_name='bookmarked_users', blank=True)
+    following = models.ManyToManyField('self', symmetrical=False, related_name='following_users', blank=True)
+    bookmarked = models.ManyToManyField('Question', related_name='bookmarked_users', blank=True)
     profile_url = models.URLField(null=True, blank=True)
+    # Custom related_name values to avoid clashes
+    groups = models.ManyToManyField(Group, verbose_name='groups', blank=True, help_text='The groups this user belongs to.', related_name='custom_users')
+    user_permissions = models.ManyToManyField(Permission, verbose_name='user permissions', blank=True, help_text='Specific permissions for this user.', related_name='custom_users_permissions')
+
+    def save(self, *args, **kwargs):
+        # Hash the password before saving
+        if self.password:
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.username
 
 class Employement(models.Model):
     user = models.OneToOneField(Users, on_delete=models.CASCADE, primary_key=True)
@@ -56,14 +72,12 @@ class Topic(models.Model):
     views = models.IntegerField(null=True, blank=True, default=0)
     topic_type = models.IntegerField(choices=TOPIC_TYPE_CHOICES, default=0)  # 0 for Parent, 1 for Child
 
-from django.db import models
-from django.utils import timezone
 
 class Question(models.Model):
     question_id = models.CharField(primary_key=True)
     title = models.CharField(max_length=255, null=True, blank=True)
     body = models.TextField(null=True, blank=True)
-    user_id = models.IntegerField(null=True, blank=True)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True, blank=True)
     createdAt = models.DateTimeField(default=timezone.now, null=True, blank=True)
     view_count = models.IntegerField(null=True, blank=True)
     upvote_count = models.IntegerField(null=True, blank=True)
@@ -97,7 +111,7 @@ class Comment(models.Model):
     body = models.TextField(null=True, blank=True)
     commentable_id = models.CharField(max_length=255, null=True, blank=True)
     parent_comment_id = models.OneToOneField('self', on_delete=models.SET_NULL, null=True, blank=True)
-    user_id = models.IntegerField(null=True, blank=True)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, null=True, blank=True)
     upvote_count = models.IntegerField(null=True, blank=True)
     downvote_count = models.IntegerField(null=True, blank=True)
     createdAt = models.DateTimeField(default=timezone.now,null=True, blank=True)

@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import Link from "next/link";
 import { BiSearch} from 'react-icons/bi';
 const Comment = dynamic(() => import("@/components/Comment"))
-
+import { useAuth } from '@/components/authContext';
 
 function truncateText(text, maxWords) {
     const words = text.split(' ');
@@ -21,59 +21,7 @@ function truncateText(text, maxWords) {
 
 const Body = () => {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-
-
-// AUTHENTICATION or DUMMY LOGIN
-const [user, setUser] = useState(null);
-
-useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      const response = await axios.get(`${backendUrl}/api/users/`);
-      const foundUser = response.data.find(
-      user => user.username === 'BIPUL'
-      &&
-      user.password === 'admin'
-      );
-
-      if (foundUser) {
-        setUser(foundUser);
-      } else {
-        console.warn('User not found');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  fetchUser();
-}, [backendUrl]);
-
-
-//
-
- const [users, setUsers] = useState([]);
-    useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}/api/users/`);
-        setUsers(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchUsers();
-  }, [backendUrl]);
-
-
-//
-
-
-
-
-//
+    const { isLoggedIn, userId, userName, login, logout } = useAuth();
 
 
     const [formData, setFormData] = useState({
@@ -102,26 +50,24 @@ useEffect(() => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
     const handleQuestionSubmit = async (event) => {
-    if (user) {
+
+    if (isLoggedIn) {
         event.preventDefault();
-        console.log(formData)
-        // Generate a unique question_id using uuid
         const uniqueQuestionId = `q-${uuidv4()}`;
 
         console.log(formData)
         try {
             const response = await axios.post(`${backendUrl}/api/questions/create/`, {
                 ...formData,
+                user:  userId,
                 question_id: uniqueQuestionId,
-                user_id: user && user.user_id
-            });
 
-            // Handle successful response
+            });
             window.location.reload();
         } catch (error) {
             console.error(error); // Handle errors
         }
-    };
+    }
     };
 
     const handleDeleteQuestion = async (questionId) => {
@@ -173,8 +119,6 @@ useEffect(() => {
                     return titleMatch || bodyMatch;
                 });
                 setFilteredQuestions(filtered);
-
-                console.log("success");
             } catch (error) {
                 console.error(error);
             }
@@ -400,13 +344,13 @@ const [answers, setAnswers] = useState([]);
                             <div className={styles.questionUserContent}>
                                 <div className="user">
                                     <div className={styles.questionUser}>
-                                        <div className={styles.questionUserName}>{users.filter(user => user.user_id ==question.user_id).map(user => user.username)}</div>
+                                        <div className={styles.questionUserName}>{userName}</div>
                                         <div>
                                             <button type="button" className={styles.button}>1Nurse&nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path></svg></button>
                                         </div>
                                     </div>
                                     <div className={styles.questionUserDescription}>
-                                        <div className={styles.questionUserDesignation}>{users.filter(user => user.user_id ==question.user_id).map(user => user.bio)}</div>
+                                        <div className={styles.questionUserDesignation}>{userId}</div>
                                         <div className={styles.globeTime}>
                                             <div className={styles.questionUserTimestamp}>4h</div>
                                             <div className={styles.globe}><Image src="/globe.png" width="10" height="10"/></div>
@@ -517,7 +461,7 @@ const [answers, setAnswers] = useState([]);
                         </div>
                         {/*Question comments dropdown*/}
 
-                        <Comment questionId={question.question_id} user_id={user && user.user_id} />
+                        <Comment questionId={question.question_id} />
 
                     </div>
                 ))}

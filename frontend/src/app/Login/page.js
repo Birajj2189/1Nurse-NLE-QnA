@@ -1,8 +1,11 @@
 "use client"
+
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { useAuth } from '@/components/authContext';
 function Login() {
+  const { login } = useAuth();
+
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const [formData, setFormData] = useState({
     username: '',
@@ -12,47 +15,29 @@ function Login() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
-  function getCSRFToken() {
-    const csrfCookie = document.cookie.split('; ')
-      .find(row => row.startsWith('csrftoken='));
-    
-    if (csrfCookie) {
-      return csrfCookie.split('=')[1];
-    }
-  
-    return null;
-  }
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const csrfToken = getCSRFToken();
-  
-    if (!csrfToken) {
-      console.error('CSRF token not found.');
-      return;
-    }
-  
-    const headers = {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrfToken,
-    };
-  
+
+    console.log("handle login")
     try {
       const response = await axios.post(`${backendUrl}/api/users/login/`, {
         ...formData,
-      }, { headers });
-  
-      // Check if the login was successful
-      if (response.data.success) {
-        console.log('Login successful!');
-        // Handle successful login, for example, redirect to a different page
-      } else {
-        console.log('Invalid user ID or password');
-      }
+      }, );
+      // Extract access token from the response
+      const accessToken = response.data.user_data.access_token;
+      const refreshToken = response.data.user_data.refresh_token;
+      const yourAccessTokenExpiry = response.data.user_data.access_token_expiry;
+      const yourRefreshTokenExpiry = response.data.user_data.refresh_token_expiry;
+
+      // Set cookies using document.cookie
+      document.cookie = `access_token=${accessToken}; HttpOnly; Path=/api; Max-Age=${yourAccessTokenExpiry}`;
+      document.cookie = `refresh_token=${refreshToken}; HttpOnly; Path=/api; Max-Age=${yourRefreshTokenExpiry}`;
+      login(response.data.user_data.user_id,response.data.user_data.username);
+      // Redirect to a protected route or perform other actions as needed
+      window.location.replace('/');
     } catch (error) {
-      console.error(error); // Handle errors
+      console.error('Login failed', error);
     }
   };
   

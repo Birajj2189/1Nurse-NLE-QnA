@@ -6,7 +6,6 @@ import styles from '@/app/styles/Body.module.css'
 import Left from './Left'
 import Right from './Right'
 import Middle from "./Middle";
-import {isAuthenticated} from "@/components/auth";
 
 const Body = ( ) => {
 

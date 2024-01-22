@@ -3,9 +3,11 @@ import styles from '@/app/styles/Middle.module.css'
 import Image from "next/image";
 import {v4 as uuidv4} from "uuid";
 import axios from "axios";
+import {useAuth} from "@/components/authContext";
 
-const Comment = ({ questionId ,user_id}) => {
+const Comment = ({ questionId }) => {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const { isLoggedIn, userId, userName, login, logout } = useAuth();
     const [comformData, setcomFormData] = useState({
       comment_id: '',
       body: '',
@@ -30,18 +32,19 @@ const Comment = ({ questionId ,user_id}) => {
       }
 
       const uniqueCommentId = `c-${uuidv4()}`;
-        setcomFormData({
-            ...comformData,
-            commentable_id: questionId,
-            user_id: user_id,  // Use the passed user_id
-        });
+        // setcomFormData({
+        //     ...comformData,
+        //     commentable_id: questionId,
+        //     user_id: userId,
+        // });
 
       try {
         setLoading(true);
         const response = await axios.post(`${backendUrl}/api/comments/create/${questionId}`, {
           ...comformData,
-          comment_id: uniqueCommentId,
-          user_id: user_id,
+            user_id: userId,
+            comment_id: uniqueCommentId,
+
         });
         setcomFormData(response.data);
         setLoading(false);
@@ -92,21 +95,8 @@ const Comment = ({ questionId ,user_id}) => {
         if (!loading) {
             fetchComments();
         }
-    }, [questionId, user_id, loading]);
+    }, [questionId, userId, loading]);
 
-     const [users, setUsers] = useState([]);
-    useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}/api/users/`);
-        setUsers(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchUsers();
-  }, [backendUrl]);
 
     return (
         <div className="collapse" id={`collapseExample${questionId}`}>
@@ -151,7 +141,7 @@ const Comment = ({ questionId ,user_id}) => {
                                 <div className={styles.commentUserContent}>
                                     <div className="user">
                                         <div className={styles.commentUser}>
-                                            <div className={styles.commentUserName}>{users.filter(user => user.user_id ==comment.user_id).map(user => user.username)}</div>
+                                            <div className={styles.commentUserName}>{userName}</div>
                                             <div>
                                                 <button type="button"
                                                         className={styles.followButton}>Follow
@@ -160,7 +150,7 @@ const Comment = ({ questionId ,user_id}) => {
                                         </div>
                                         <div className={styles.commentUserDescription}>
 
-                                            <div className={styles.commentUserDesignation}>{users.filter(user => user.user_id ==comment.user_id).map(user => user.bio)}
+                                            <div className={styles.commentUserDesignation}>{userId}
                                             </div>
                                             <div className={styles.globeTime}>
                                                 <div className={styles.commentUserTimestamp}>5h</div>

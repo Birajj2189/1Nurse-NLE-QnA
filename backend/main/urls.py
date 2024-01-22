@@ -27,7 +27,7 @@ from .views import (
     DeleteTopic,
     ListParentTopics,
     GetTopicsByParentId,
-    LoginView,
+    UserLoginView,
     QuestionListByTopicId,
 )
 
@@ -73,5 +73,5 @@ urlpatterns = [
     path('comments/delete/<str:comment_id>', CommentDeleteView.as_view(), name='comment-delete'),
 
 
-    path('users/login/', LoginView.as_view(), name='login'),
+    path('users/login/', UserLoginView.as_view(), name='user-login'),
 ]

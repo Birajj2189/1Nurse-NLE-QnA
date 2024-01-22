@@ -7,20 +7,22 @@ import Navbar from "@/components/Navbar";
 import BootstrapClient from "@/components/BootstrapClient";
 import Sidebar from "@/components/Sidebar";
 
-
 const inter = Inter({ subsets: ['latin'] })
+import { AuthProvider } from '@/components/authContext';
 
 
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+    <AuthProvider>
       <body className={inter.className}>
             <Navbar/>
             <Sidebar/>
           {children}
       <BootstrapClient/>
       </body>
+    </AuthProvider>
     </html>
   )
 }

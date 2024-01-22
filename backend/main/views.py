@@ -1,5 +1,6 @@
 # main/views.py
-
+from django.contrib.auth.hashers import check_password
+from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,7 +8,9 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from .models import Question, Posts, Topic, Users, Employement, Education, Location,Vote, Answer, Comment
-from .serializers import QuestionSerializer, PostsSerializer, TopicSerializer, UsersSerializer, EmployementSerializer, EducationSerializer, LocationSerializer,VoteSerializer, AnswerSerializer, CommentSerializer
+from .serializers import QuestionSerializer, PostsSerializer, TopicSerializer, UsersSerializer,UserLoginSerializer, EmployementSerializer, EducationSerializer, LocationSerializer,VoteSerializer, AnswerSerializer, CommentSerializer
+from datetime import datetime
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 def home(request):
@@ -102,6 +105,14 @@ class UsersCreateView(generics.CreateAPIView):
     queryset = Users.objects.all()
     serializer_class = UsersSerializer
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED, headers=headers)
+
+
 class UsersList(generics.ListAPIView):
     queryset = Users.objects.all()
     serializer_class = UsersSerializer
@@ -185,19 +196,40 @@ def destroy(self, request, *args, **kwargs):
     self.perform_destroy(instance)
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-class LoginView(generics.ListAPIView):
-    @csrf_exempt
+class UserLoginView(generics.ListAPIView):
     def post(self, request, *args, **kwargs):
-        data = request.data
-        username = data.get('username')
-        password = data.get('password')
-        user_type = data.get('user_type')
+        try:
+            username = request.data['username']
+            password = request.data['password']
 
-        user = authenticate(request, username=username, password=password)
+            # Retrieve user from the database
+            user = Users.objects.get(username=username)
 
-        if user is not None and user.user_type == user_type:
-            login(request, user)
-            return Response({'success': True, 'message': 'Login successful'})
-        else:
-            return Response({'success': False, 'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            # Compare hashed password
+            if check_password(password, user.password):
+                # Password is correct
+
+                # Generate refresh token
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+                # Calculate token expiration time
+                access_token_exp = datetime.utcnow() + refresh.access_token.lifetime
+                refresh_token_exp = datetime.utcnow() + refresh.lifetime
+
+                # Return user data and tokens
+                serializer = UsersSerializer(user)
+                return Response({
+                    'user_data': serializer.data,
+                    'access_token': access_token,
+                    'refresh_token': refresh_token,
+                    'access_token_expiry': access_token_exp.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                    'refresh_token_expiry': refresh_token_exp.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+                }, status=status.HTTP_200_OK)
+            else:
+                # Invalid credentials
+                return Response({'non_field_errors': ['Invalid credentials']}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Users.DoesNotExist:
+            # User does not exist
+            return Response({'non_field_errors': ['Invalid credentials']}, status=status.HTTP_400_BAD_REQUEST)
